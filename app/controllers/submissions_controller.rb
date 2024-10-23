@@ -1,0 +1,62 @@
+class SubmissionsController < ApplicationController
+  before_action :set_submission, only: [ :show, :edit, :update, :destroy ]
+  def index
+    @submissions = Submission.all
+  end
+
+  def new
+    @submission = Submission.new
+  end
+
+  def create
+    @submission = Submission.new(submission_params)
+
+    respond_to do |format|
+      if @submission.save
+        format.html { redirect_to @submission, notice: "Submission was successfully created." }
+      else
+        format.html { render :new }
+      end
+    end
+  end
+
+  def show
+  end
+
+  def edit
+  end
+
+  def update
+    respond_to do |format|
+      if @submission.update(submission_params)
+        format.html { redirect_to @submission, notice: "Submission was successfully updated." }
+      else
+        format.html { render :edit }
+      end
+    end
+  end
+
+  def destroy
+    # Attempt to destroy the submission
+    if @submission.destroy
+      respond_to do |format|
+        format.html { redirect_to submissions_url, notice: "Submission was successfully destroyed." }
+      end
+    else
+      # Handle the case where destroy fails
+      respond_to do |format|
+        format.html { redirect_to submissions_url, alert: "Failed to destroy the submission." }
+      end
+    end
+  end
+
+  private
+
+    def set_submission
+      @submission = Submission.find(params[:id])
+    end
+
+    def submission_params
+      params.require(:submission).permit(:title, :body)
+    end
+end
