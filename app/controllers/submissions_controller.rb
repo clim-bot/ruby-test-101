@@ -1,11 +1,18 @@
 class SubmissionsController < ApplicationController
   before_action :set_submission, only: [ :show, :edit, :update, :destroy ]
+
   def index
     @submissions = Submission.all
   end
 
+  def show
+  end
+
   def new
     @submission = Submission.new
+  end
+
+  def edit
   end
 
   def create
@@ -20,12 +27,6 @@ class SubmissionsController < ApplicationController
     end
   end
 
-  def show
-  end
-
-  def edit
-  end
-
   def update
     respond_to do |format|
       if @submission.update(submission_params)
@@ -37,21 +38,13 @@ class SubmissionsController < ApplicationController
   end
 
   def destroy
-    # Attempt to destroy the submission
-    if @submission.destroy
-      respond_to do |format|
-        format.html { redirect_to submissions_url, notice: "Submission was successfully destroyed." }
-      end
-    else
-      # Handle the case where destroy fails
-      respond_to do |format|
-        format.html { redirect_to submissions_url, alert: "Failed to destroy the submission." }
-      end
+    @submission.destroy
+    respond_to do |format|
+      format.html { redirect_to submissions_url, notice: "Submission was successfully destroyed." }
     end
   end
 
   private
-
     def set_submission
       @submission = Submission.find(params[:id])
     end
